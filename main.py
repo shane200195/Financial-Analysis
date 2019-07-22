@@ -30,11 +30,20 @@ def test():
 #retreiving the input from the page, in order to obtain the ticker name of the stock
 @app.route("/data", methods=["POST"])
 def getName():
+
+	from lin_regression import generate_equation
+	#getting the stock data that the user wants
 	stockName = request.form['name']
 	data = alpha_vantage_timeseries(stockName)
+	print(data['open'])
+	#getting how long the user wants to go back in history
+	history = int(request.form['history'])
 
-	#stockData = request.form['data']
-	return jsonify({'prices': (stockName), 'open':list(data['open']), 'date':list(data.index)})
+	#change how long the user wants to use linear regression
+	slope_yint = generate_equation(data, history, 25)
+
+	#implement feature to indicate how long in the past the user wants to see
+	return jsonify({'prices': (stockName), 'open':list(data['open'])[:history][::-1], 'date':list(data.index)[:history][::-1], 'slope_yint':slope_yint})
 
 #setting debug to true
 if __name__ == "__main__":
