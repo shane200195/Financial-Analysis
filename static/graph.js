@@ -1,4 +1,4 @@
-function create_bar_graph(graph_type, graph_x_labels, graph_data, graph_y_label){
+function create_bar_graph(graph_type, graph_x_labels, graph_data, graph_y_label, regression_data){
     $('#myChart').remove();
     $('.graph-container').append('<canvas id="myChart" width="400" height="200"></canvas>');
     var ctx = document.querySelector('#myChart').getContext('2d');
@@ -6,15 +6,12 @@ function create_bar_graph(graph_type, graph_x_labels, graph_data, graph_y_label)
         type: graph_type,
         data: {
             labels: graph_x_labels,
-            datasets: [{
-                label: graph_y_label,
-                data: graph_data,
-                borderColor: 'rgb(0,0,0)',
-                pointRadius: 0.5
-
-            }]
+            datasets: create_line(y_cor_generator(graph_x_labels , regression_data), graph_x_labels, graph_y_label, graph_data)
         },
         options: {
+            legend:{
+                display: false
+            },
             scales: {
                 yAxes: [{
                     ticks: {

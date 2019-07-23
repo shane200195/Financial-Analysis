@@ -35,7 +35,6 @@ def getName():
 	#getting the stock data that the user wants
 	stockName = request.form['name']
 	data = alpha_vantage_timeseries(stockName)
-	print(data['open'])
 	#getting how long the user wants to go back in history
 	history = int(request.form['history'])
 

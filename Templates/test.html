@@ -20,9 +20,8 @@
         	<canvas id="myChart" width="400" height="200"></canvas>
     	</div>
 
-    	<script src = "{{ url_for('static', filename='graph.js') }}" type="text/javascript"></script>
         <script src = "{{ url_for('static', filename='lin_regression.js') }}" type="text/javascript"></script>
-
+    	<script src = "{{ url_for('static', filename='graph.js') }}" type="text/javascript"></script>
 	    <script type="text/javascript">
     		$(function(){
     			function getData(ticker){
@@ -47,8 +46,7 @@
     					data: {name: input, history:days_past/*, data:getData(input)*/},
     				})
     				.done(function(data) {
-    					create_bar_graph('line', data.date, data.open, "Open price")
-                        graphing_lines(data.slope_yint)
+    					create_bar_graph('line', data.date, data.open, "Open price", data.slope_yint)
     					//$('body').append(data.prices + data.open + data.date)
     				});
     				event.preventDefault();
@@ -59,4 +57,4 @@
 	    </script>
 
 	</body>
-</html
+</html>
