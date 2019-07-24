@@ -11,6 +11,8 @@
 	        <input type="text" id="stockName" placeholder="First Name">
             <label for="nameInput">Days in the past</label>
             <input type="text" id="days" placeholder="50">
+            <label for="nameInput">How many days do you want the regression to go for</label>
+            <input type="text" id="lin_regression" placeholder="50">
 	      </div>
 	      <button type="submit" class="submit-button">Submit</button>
 	    </form>
@@ -39,15 +41,15 @@
     			$('.submit-button').on('click', function(event) {
     				var input = $('#stockName').val();
                     var days_past = $('#days').val();
+                    var regression_len = parseInt($('#lin_regression').val());
     				//sending an ajax request to the server, sending the ticker requested by client
     				$.ajax({
     					url: '/data',
     					type: 'POST',
-    					data: {name: input, history:days_past/*, data:getData(input)*/},
+    					data: {name: input, history:days_past, regression_days:regression_len},
     				})
     				.done(function(data) {
-    					create_bar_graph('line', data.date, data.open, "Open price", data.slope_yint)
-    					//$('body').append(data.prices + data.open + data.date)
+    					create_bar_graph('line', data.date, data.open, "Open price", data.slope_yint, regression_len)
     				});
     				event.preventDefault();
 

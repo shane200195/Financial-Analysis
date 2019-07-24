@@ -37,9 +37,11 @@ def getName():
 	data = alpha_vantage_timeseries(stockName)
 	#getting how long the user wants to go back in history
 	history = int(request.form['history'])
+	#getting how many days regression should run for
+	regression = int(request.form['regression_days'])
 
 	#change how long the user wants to use linear regression
-	slope_yint = generate_equation(data, history, 25)
+	slope_yint = generate_equation(data, history, regression)
 
 	#implement feature to indicate how long in the past the user wants to see
 	return jsonify({'prices': (stockName), 'open':list(data['open'])[:history][::-1], 'date':list(data.index)[:history][::-1], 'slope_yint':slope_yint})
