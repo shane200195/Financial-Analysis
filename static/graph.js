@@ -1,3 +1,4 @@
+//function for creating bar graphs
 function create_bar_graph(graph_type, graph_x_labels, graph_data, graph_y_label, regression_data, length_per_regression){
     $('#myChart').remove();
     $('.graph-container').append('<canvas id="myChart" width="400" height="200"></canvas>');

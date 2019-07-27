@@ -7,53 +7,46 @@
 	<body>
 		<form class="form-inline">
 	      <div class="form-group">
+
+            <!-- Input fields for stock content !-->
 	        <label for="nameInput">Stock Label</label>
-	        <input type="text" id="stockName" placeholder="First Name">
-            <label for="nameInput">Days in the past</label>
-            <input type="text" id="days" placeholder="50">
-            <label for="nameInput">How many days do you want the regression to go for</label>
-            <input type="text" id="lin_regression" placeholder="50">
+            <div id="lin-regression-input">
+                <!--Input fields for linear regression !-->
+    	        <input type="text" id="stockName" placeholder="First Name">
+                <label for="nameInput">Days in the past</label>
+                <input type="text" id="days" placeholder="50">
+                <label for="nameInput">How many days do you want the regression to go for</label>
+                <input type="text" id="lin_regression" placeholder="50">
+            </div>
 	      </div>
 	      <button type="submit" class="submit-button">Submit</button>
 	    </form>
+        <!-- Selecting a method of analysis !-->
+        <select id="selection-choice">
+            <option id="lin-reg">Linear regession</option>
+            <option id="test">Test</option>
+        </select>
+
+        <!-- Importing the requqired javaScript libraries !-->
 	    <script src="{{ url_for('static', filename='jquery.js') }}" type="text/javascript"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js" type="text/javascript"></script>
+
+        <!-- Canvas for the grph that will be generated !-->
 	    <div class="graph-container">
         	<canvas id="myChart" width="400" height="200"></canvas>
     	</div>
 
+        <!-- Importing the required libraries !-->
         <script src = "{{ url_for('static', filename='lin_regression.js') }}" type="text/javascript"></script>
     	<script src = "{{ url_for('static', filename='graph.js') }}" type="text/javascript"></script>
+
+        <!-- AJAX/jQuery implementation !-->
 	    <script type="text/javascript">
     		$(function(){
-    			function getData(ticker){
-    				var myvar;
-    				$.ajax({
-    					url: 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + ticker + '&interval=5min&apikey=4RKAADTMMAZ4U000&datatype=csv',
-    					type: 'GET',
-    					success: function(data){
-    						myvar = data;
-    					},
-    					async: false,
-    				});
-    				return myvar
-    			}
+                //Sending the data to the server with AJAX, and graphing the processed data
     			$('.submit-button').on('click', function(event) {
-    				var input = $('#stockName').val();
-                    var days_past = $('#days').val();
-                    var regression_len = parseInt($('#lin_regression').val());
-    				//sending an ajax request to the server, sending the ticker requested by client
-    				$.ajax({
-    					url: '/data',
-    					type: 'POST',
-    					data: {name: input, history:days_past, regression_days:regression_len},
-    				})
-    				.done(function(data) {
-    					create_bar_graph('line', data.date, data.open, "Open price", data.slope_yint, regression_len)
-    				});
-    				event.preventDefault();
-
-
+                    alert($('#selection-choice').val());
+                    lin_regression_ajax(event);
     			});
     		})
 	    </script>
