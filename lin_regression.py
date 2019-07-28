@@ -4,9 +4,6 @@ from main import alpha_vantage_timeseries
 import matplotlib.pyplot as plt
 
 
-
-stock_data = alpha_vantage_timeseries('MSFT')
-
 def linear_regression(data, starting, length, total):
 
 	#generating an incrementing x_cor for each price
@@ -33,7 +30,6 @@ def linear_regression(data, starting, length, total):
 	y_int = mean_y - slope*mean_x
 
 	#graphing the generated line from linear regression
-	plt.plot(x_cor, [slope*i+y_int for i in x_cor], color ='Red')
 	return [slope, y_int]
 
 

@@ -62,12 +62,12 @@ function lin_regression_ajax(event){
 
 	//sending an ajax request to the server, sending the ticker requested by client
 	$.ajax({
-		url: '/data',
+		url: '/lin_regression',
 		type: 'POST',
         //sending the user's desired stock, how many days in the history they want, and how long they want their linear regression to be
 		data: {name: input, history:days_past, regression_days:regression_len},
 	})
-	
+
 	//creating the graph once the data has been received from flask backend
 	.done(function(data) {
 		create_bar_graph('line', data.date, data.open, "Open price", data.slope_yint, regression_len)

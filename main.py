@@ -28,10 +28,10 @@ def test():
 	return render_template('test.html')
 
 #retreiving the input from the page, in order to obtain the ticker name of the stock
-@app.route("/data", methods=["POST"])
-def getName():
-
+@app.route("/lin_regression", methods=["POST"])
+def lin_regression():
 	from lin_regression import generate_equation
+
 	#getting the stock data that the user wants
 	stockName = request.form['name']
 	data = alpha_vantage_timeseries(stockName)
@@ -45,6 +45,28 @@ def getName():
 
 	#implement feature to indicate how long in the past the user wants to see
 	return jsonify({'prices': (stockName), 'open':list(data['open'])[:history][::-1], 'date':list(data.index)[:history][::-1], 'slope_yint':slope_yint})
+
+
+@app.route("/moving_average", methods=["POST"])
+def moving_average():
+	from moving_average import moving_average
+
+	#getting the number of days you want to go back
+	stockName = request.form['name']
+	rolling = int(request.form['rolling'])
+	history = int(request.form['history'])
+
+	#retreiving the data from alpha vantage, and processing it with python
+	data = alpha_vantage_timeseries(stockName)
+	MA_price = moving_average(data[:history+rolling], rolling)
+
+	#returning the result of processing
+	return jsonify({'days': rolling, 'MA_price': MA_price[::-1], 'date':list(data.index[:history])[::-1]})
+
+
+
+
+
 
 #setting debug to true
 if __name__ == "__main__":
